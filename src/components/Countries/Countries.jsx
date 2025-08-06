@@ -4,8 +4,8 @@ import './Countries.css';
 
 const Countries = () => {
 
-
     const [countries, setCountries] = useState([])
+    const [visitedCountries, setVisitedCountries] = useState([]);
 
     useEffect(() => {
         const fetchCountries = async () => {
@@ -22,12 +22,27 @@ const Countries = () => {
         fetchCountries()
     }, [])
 
+    const handleVisitedCountry = (country) => {
+        setVisitedCountries(prev => [...prev, country]);
+        console.log('Visited country:', country);
+    }
+
     return (
         <>
             <h3>Countries: {countries?.length}</h3>
+            <div>
+                <h5>
+                    Visited Countries: {visitedCountries.length}
+                </h5>
+                <ul>
+                    {
+                        visitedCountries?.map((country) => <li key={country.iso2}>{country}</li>)
+                    }
+                </ul>
+            </div>
             <div className='countries-container'>
                 {
-                    countries.map(country => <Country key={country.iso2} country={country} />)
+                    countries.map(country => <Country key={country.iso2} country={country} handleVisitedCountry = {handleVisitedCountry}/>)
                 }
             </div>
         </>
